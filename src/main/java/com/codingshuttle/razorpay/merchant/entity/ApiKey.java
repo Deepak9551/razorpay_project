@@ -1,12 +1,21 @@
 package com.codingshuttle.razorpay.merchant.entity;
 
+import com.codingshuttle.razorpay.common.enums.Environment;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "api_keys")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class  ApiKey {
 
     @Id
@@ -23,6 +32,12 @@ public class  ApiKey {
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "merchant_id", nullable = false)
     private Merchant merchant;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Environment environment;
+    @Builder.Default
+    private boolean enabled=true;
 
     // key used details
     private LocalDateTime lastUsedAt;
