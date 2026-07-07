@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-public class ApiKey {
+public class  ApiKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

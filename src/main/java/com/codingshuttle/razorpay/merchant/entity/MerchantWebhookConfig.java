@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -12,8 +14,8 @@ public class MerchantWebhookConfig {
     // this details are used to configure webhook
     // this details are used by the payment gateway to the payment details on event
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     // why merchat many webhook to one merchant
     // merchant can have multiple webhook because different events can be send to single merchant ( order.created, order.updated, order.deleted)

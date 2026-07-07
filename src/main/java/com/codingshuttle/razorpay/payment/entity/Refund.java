@@ -19,8 +19,8 @@ import java.util.UUID;
 public class Refund {
 
     @Id
-            @GeneratedValue(strategy = GenerationType.UUID)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
 
     // to identity which refund belongs to which merchant
     // many refund belong to single merchant
@@ -34,7 +34,7 @@ public class Refund {
     private RefundStatus status = RefundStatus.PENDING;
 
     // many refund belong to single payment
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)  // 30 % refund - 70 % by another refund
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
@@ -50,6 +50,6 @@ public class Refund {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private Map<String, Object> notes;
+    private Map<String, Object> notes; // why this payment is refund
 
 }

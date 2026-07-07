@@ -33,7 +33,7 @@ public class AppUser {
 
     // many AppUser blong to one Merchant
     @ManyToOne
-    @Enumerated(EnumType.STRING)
+
     @JoinColumn(name = "merchant_id", nullable = false)
     private Merchant merchant;
 
