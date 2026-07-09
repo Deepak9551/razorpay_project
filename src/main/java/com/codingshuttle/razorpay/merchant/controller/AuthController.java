@@ -1,7 +1,7 @@
 package com.codingshuttle.razorpay.merchant.controller;
 
-import com.codingshuttle.razorpay.merchant.dto.MerchantRequest;
-import com.codingshuttle.razorpay.merchant.dto.MerchantResponse;
+import com.codingshuttle.razorpay.merchant.dto.request.MerchantRequest;
+import com.codingshuttle.razorpay.merchant.dto.response.MerchantResponse;
 import com.codingshuttle.razorpay.merchant.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

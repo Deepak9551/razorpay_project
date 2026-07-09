@@ -16,3 +16,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+payment:
+  order:
+    default-expiration-minutes: ${ORDER_EXPIRATION_MINUTES:15}

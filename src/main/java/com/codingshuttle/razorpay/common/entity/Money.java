@@ -2,10 +2,15 @@ package com.codingshuttle.razorpay.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
 // embeddable class = reusable sub table can be used different table
 // reuse these field in different table
+@Getter
+@Setter
 public class Money {
     @Column(name = "amount_units", nullable = false)
     private int amountUnits;

@@ -1,4 +1,4 @@
-package com.codingshuttle.razorpay.merchant.dto;
+package com.codingshuttle.razorpay.merchant.dto.response;
 
 import com.codingshuttle.razorpay.common.enums.BusinessType;
 

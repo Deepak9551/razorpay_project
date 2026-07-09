@@ -27,17 +27,20 @@ public class OrderRecord {
     private UUID id;
     @Column(name = "merchant_id", nullable = false)
     // no FK because of cross service boundary
-    private String merchantId;
+    private UUID merchantId;
     @Embedded
     private Money amount;
-
+    @Column(name = "receipt")
+    private String receipt;
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private OrderStatus status = OrderStatus.CREATED;
-
+    @Column(name = "attempts",nullable = false)
+    @Builder.Default
     private Integer attempts = 0;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
-    private Map<String, Objects> notes = new HashMap<>(); // json meta data
+    private Map<String, Object> notes = new HashMap<>(); // json meta data // TODO: limits on size of notes
     private LocalDateTime expiredAt;
 }

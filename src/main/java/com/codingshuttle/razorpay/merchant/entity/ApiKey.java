@@ -23,11 +23,12 @@ public class  ApiKey {
     private UUID id;
     // used by merchant to connect with razorpay
     // key id for merchant identification and secret hash for authentication
-    @Column(length = 100,nullable = false)
+    @Column(length = 100,nullable = false , unique = true)
     private String keyId;
     @Column(length = 100,nullable = false)
-    private String secretHash;
-
+    private String keySecretHash;
+    @Column(length = 100)
+    private String prevKeySecretHash;
     // many ApiKey belong to one merchant
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "merchant_id", nullable = false)
