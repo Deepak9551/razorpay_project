@@ -1,5 +1,6 @@
 package com.codingshuttle.razorpay.payment.entity;
 
+import com.codingshuttle.razorpay.common.entity.BaseEntity;
 import com.codingshuttle.razorpay.common.entity.Money;
 import com.codingshuttle.razorpay.common.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -20,8 +21,13 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order_record")
-public class OrderRecord {
+@Table(name = "order_record" ,
+indexes = {
+        @Index(name = "idx_order_record_order_id_merchant_id", columnList = "id,merchant_id")
+        ,@Index(name = "idx_order_record_merchant_id", columnList = "merchant_id")
+})
+
+public class OrderRecord extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -43,4 +49,5 @@ public class OrderRecord {
     @Column(columnDefinition = "json")
     private Map<String, Object> notes = new HashMap<>(); // json meta data // TODO: limits on size of notes
     private LocalDateTime expiredAt;
+
 }

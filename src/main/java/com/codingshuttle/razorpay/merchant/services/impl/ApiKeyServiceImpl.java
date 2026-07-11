@@ -7,6 +7,7 @@ import com.codingshuttle.razorpay.merchant.dto.response.ApiKeyCreateResponse;
 import com.codingshuttle.razorpay.merchant.dto.response.ApiKeyResponse;
 import com.codingshuttle.razorpay.merchant.entity.ApiKey;
 import com.codingshuttle.razorpay.merchant.entity.Merchant;
+import com.codingshuttle.razorpay.merchant.mapper.ApiKeyMapper;
 import com.codingshuttle.razorpay.merchant.repositories.ApiKeyRepository;
 import com.codingshuttle.razorpay.merchant.repositories.MerchantRepository;
 import com.codingshuttle.razorpay.merchant.services.ApiKeyService;
@@ -28,6 +29,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
     private final MerchantRepository merchantRepository;
     private final ApiKeyRepository apiKeyRepository;
+    private final ApiKeyMapper apiKeyMapper;
 
     @Override
     public ApiKeyCreateResponse createApiKey(UUID merchantId, ApiKeyCreateRequest request) {
@@ -44,19 +46,19 @@ public class ApiKeyServiceImpl implements ApiKeyService {
                 .environment(request.environment())
                 .build();
         apiKey = apiKeyRepository.save(apiKey);
+        // no use mapper because we need to send the raw secret to the merchant and store encrypted in db
+        // apiKey( secret = (encrypted) )
+        // apiKeyCreateResponse( secret = (raw) )
+        // if we use mapper then we need to decrypt the secret or encrypted will be send to merchant
         return new ApiKeyCreateResponse(apiKey.getId(), key, secret, request.environment());
     }
-
+    // list all merchant api keys
     @Override
     public List<ApiKeyResponse> listByMerchant(UUID merchantId) {
 
         // get all no need to check id ( in place empty list return )
-        return apiKeyRepository.findByMerchant_Id(merchantId)
-                .stream()
-                .map(apiKey ->
-                        new ApiKeyResponse(apiKey.getId(), apiKey.getKeyId(), apiKey.getEnvironment(), apiKey.isEnabled(), apiKey.getLastUsedAt(), apiKey.getRotatedAt(), apiKey.getGracePeriodEndAt()))
-                .toList();
-
+        List<ApiKey> merchantApiKeys = apiKeyRepository.findByMerchant_Id(merchantId);
+        return  apiKeyMapper.toResponseList(merchantApiKeys);
     }
 
     @Override

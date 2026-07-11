@@ -1,5 +1,6 @@
 package com.codingshuttle.razorpay.payment.entity;
 
+import com.codingshuttle.razorpay.common.entity.BaseEntity;
 import com.codingshuttle.razorpay.common.enums.PaymentActor;
 import com.codingshuttle.razorpay.common.enums.PaymentEvent;
 import com.codingshuttle.razorpay.common.enums.PaymentMethod;
@@ -16,7 +17,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentTransactionLog {
+@Table(name = "payment_transaction_log",
+indexes = {
+        @Index(name = "idx_payment_transaction_log_payment_id", columnList = "payment_id")
+})
+public class PaymentTransactionLog extends BaseEntity {
 //
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

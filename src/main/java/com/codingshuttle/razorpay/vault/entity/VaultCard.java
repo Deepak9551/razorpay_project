@@ -1,5 +1,6 @@
 package com.codingshuttle.razorpay.vault.entity;
 
+import com.codingshuttle.razorpay.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class VaultCard {
+public class VaultCard extends BaseEntity {
 // rule - store the sensitive data in encrypted form
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

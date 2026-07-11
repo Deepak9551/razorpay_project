@@ -1,4 +1,4 @@
-package com.codingshuttle.razorpay.payment.dto;
+package com.codingshuttle.razorpay.payment.dto.request;
 
 import com.codingshuttle.razorpay.common.entity.Money;
 import jakarta.validation.constraints.NotNull;

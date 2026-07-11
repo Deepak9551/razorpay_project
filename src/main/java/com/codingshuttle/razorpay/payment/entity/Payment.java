@@ -1,5 +1,6 @@
 package com.codingshuttle.razorpay.payment.entity;
 
+import com.codingshuttle.razorpay.common.entity.BaseEntity;
 import com.codingshuttle.razorpay.common.entity.Money;
 import com.codingshuttle.razorpay.common.enums.PaymentMethod;
 import com.codingshuttle.razorpay.common.enums.PaymentStatus;
@@ -19,8 +20,13 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "payment")
-public class Payment {
+@Table(name = "payment",
+indexes = {
+        @Index(name = "idx_payment_order_record_id", columnList = "order_record_id"),
+        @Index(name = "idx_payment_merchant_id", columnList = "merchant_id"),
+
+})
+public class Payment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -62,4 +68,5 @@ public class Payment {
     private LocalDateTime failedAt;
     private LocalDateTime refundedAt;
 //    private LocalDateTime expiredAt;
+
 }

@@ -1,22 +1,27 @@
 package com.codingshuttle.razorpay.merchant.entity;
 
+import com.codingshuttle.razorpay.common.entity.BaseEntity;
 import com.codingshuttle.razorpay.common.enums.Environment;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Indexed;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "api_keys")
+@Table(name = "api_keys"
+,indexes = {
+        @Index(name = "idx_api_key_merchant_env_enabled", columnList = "merchant_id,environment,enabled"),
+})
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class  ApiKey {
+public class  ApiKey extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

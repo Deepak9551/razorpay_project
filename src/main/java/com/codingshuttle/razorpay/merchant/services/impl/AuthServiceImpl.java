@@ -7,6 +7,8 @@ import com.codingshuttle.razorpay.merchant.dto.request.MerchantRequest;
 import com.codingshuttle.razorpay.merchant.dto.response.MerchantResponse;
 import com.codingshuttle.razorpay.merchant.entity.AppUser;
 import com.codingshuttle.razorpay.merchant.entity.Merchant;
+import com.codingshuttle.razorpay.merchant.mapper.ApiKeyMapper;
+import com.codingshuttle.razorpay.merchant.mapper.MerchantMapper;
 import com.codingshuttle.razorpay.merchant.repositories.AppUserRepository;
 import com.codingshuttle.razorpay.merchant.repositories.MerchantRepository;
 import com.codingshuttle.razorpay.merchant.services.AuthService;
@@ -23,6 +25,11 @@ public class AuthServiceImpl implements AuthService {
     private final MerchantRepository merchantRepository;
     private final AppUserRepository appUserRepository;
 
+    // mappers
+    private final MerchantMapper merchantMapper;
+    private final ApiKeyMapper apiKeyMapper;
+
+    // merchant on boarding
     @Override
     @Transactional
     public MerchantResponse signUp(MerchantRequest request) {
@@ -32,18 +39,12 @@ public class AuthServiceImpl implements AuthService {
         if(merchantRepository.existsByEmail(request.email())){
             throw new DuplicateResourse("DUPLICATE_EMAIL","Email already exists :"  + request.email());
         }
-        Merchant merchant = Merchant.builder()
-                .name(request.name())
-                .email(request.email())
-                .contact(request.contact())
-                .address(request.address())
-                .businessType(request.bussinessType())
-                .businessName(request.bussinessName())
-                .status(MerchantStatus.PENDING_KYC)
-                .build();
-
+       Merchant merchant = merchantMapper.toEntityFromMerchantRequest(request);
+        // show merchant is the pending KYC state so anybody can go the DB and make the status + "ACTIVE"
+        merchant.setStatus(MerchantStatus.PENDING_KYC);
        merchant =  merchantRepository.save(merchant); // operation 1 : save merchant
 
+        // merchant request -  ( password not in merchant db use in created app user )
         AppUser appUser = AppUser.builder()
                 .name(request.name())
                 .email(request.email())
@@ -56,6 +57,6 @@ public class AuthServiceImpl implements AuthService {
 
         // rollback if any operation fails
         // commit if all operations are successful
-        return new MerchantResponse(merchant.getId(), merchant.getName(), merchant.getEmail(), merchant.getContact(), merchant.getAddress(), merchant.getBusinessType(), merchant.getBusinessName());
+        return merchantMapper.toResponse(merchant);
     }
 }
